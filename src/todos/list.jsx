@@ -1,13 +1,13 @@
 import React from "react";
 
-export const Todolist = ({ todos, toggleTodo }) => {
+export const TodoList = ({ todos, toggleTodo }) => {
     return todos.map((todo) => (
         <div
           key={todo.id}
           style={{
             textDecoration: todo.status === "COMPLETE" && "line-through",
           }}
-        onClick={this.toggleTodo(todo.id)}>
+        onClick={toggleTodo(todo.id)}>
           {todo.text}
         </div>
       )) 

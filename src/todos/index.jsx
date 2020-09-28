@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Todolist } from "./list";
+import { TodoList } from "./list";
 
 let index = 4;
 export class Todos extends Component {
@@ -9,6 +9,7 @@ export class Todos extends Component {
       { text: "Todo2", id: 2, status: "ACTIVE" },
       { text: "Todo3", id: 3, status: "ACTIVE" },
     ],
+    filter: "ALL",
   };
 
   onInputChange = (e) => {
@@ -34,7 +35,28 @@ export class Todos extends Component {
           todos: this.state.todos.map(
               (todo) => todo.id === id ? ({...todo, status: todo.status === "ACTIVE" ? "COMPLETE" : "ACTIVE"}) : todo
           )
-      })
+      });
+  };
+
+  applyFilter = (filter) => (ev) => {
+    this.setState({ filter });
+  };
+
+  getTodos = () => {
+    switch (this.state.filter) {
+      case "ACTIVE": {
+        return this.state.todos.filter((todo) => (
+          todo.status === "ACTIVE"
+        ));
+      }
+      case "COMPLETE": {
+        return this.state.todos.filter(todo => (
+          todo.status === "COMPLETE"
+        ))
+      }
+        
+      default: return this.state.todos;
+    }
   }
 
   render() {
@@ -44,7 +66,13 @@ export class Todos extends Component {
 
         <input type="text" onKeyDown={this.onInputChange} />
 
-        <Todolist todos={this.state.todos} toggleTodo={this.toggleTodo} />
+        <TodoList todos={this.getTodos()} toggleTodo={this.toggleTodo} />
+
+        <div>
+          <button onClick={this.applyFilter("ALL")}>ALL</button>
+          <button onClick={this.applyFilter("ACTIVE")}>ACTIVE</button>
+          <button onClick={this.applyFilter("COMPLETE")}>COMPLETE</button>
+        </div>
       </div>
     );
   }
